@@ -11,7 +11,11 @@
   "tags": [
     {
       "name": "Health",
-      "description": "API"
+      "description": "Health API"
+    },
+    {
+      "name": "Grid",
+      "description": "GridAPI"
     }
     
   ],
@@ -19,7 +23,7 @@
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
-    "/api/v1/health/": {
+    "/api/v1/health": {
       "get": {
         "tags": ["Health"],
         "description": "Get system health",
@@ -30,6 +34,159 @@
             "message": "ok",
             "schema": {}
           }
+        }
+      }
+    },
+    "/api/v1/grid": {
+      "post": {
+        "tags": ["Grid"],
+        "description": "Get the Grid",
+        "produces": ["application/json"],
+        "summary": "Random grid and count",
+        "parameters": [
+          {
+            "name": "character",
+            "in": "body",
+            "description": "character for Weighting factor ",
+            "schema": {
+              "properties": {
+                "character": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "status": "success",
+            "message": "grid generated",
+            "data": {
+                "grid": [
+                    [
+                        "m",
+                        "f",
+                        "w",
+                        "v",
+                        "o",
+                        "q",
+                        "w",
+                        "g",
+                        "w",
+                        "p"
+                    ],
+                    [
+                        "j",
+                        "w",
+                        "w",
+                        "l",
+                        "d",
+                        "w",
+                        "l",
+                        "g",
+                        "p",
+                        "o"
+                    ],
+                    [
+                        "x",
+                        "l",
+                        "w",
+                        "g",
+                        "k",
+                        "s",
+                        "b",
+                        "w",
+                        "z",
+                        "w"
+                    ],
+                    [
+                        "w",
+                        "j",
+                        "y",
+                        "m",
+                        "q",
+                        "r",
+                        "v",
+                        "d",
+                        "c",
+                        "d"
+                    ],
+                    [
+                        "c",
+                        "q",
+                        "z",
+                        "q",
+                        "h",
+                        "m",
+                        "e",
+                        "a",
+                        "s",
+                        "q"
+                    ],
+                    [
+                        "z",
+                        "r",
+                        "e",
+                        "k",
+                        "l",
+                        "i",
+                        "w",
+                        "w",
+                        "j",
+                        "k"
+                    ],
+                    [
+                        "n",
+                        "j",
+                        "y",
+                        "x",
+                        "w",
+                        "a",
+                        "q",
+                        "s",
+                        "h",
+                        "w"
+                    ],
+                    [
+                        "u",
+                        "c",
+                        "l",
+                        "l",
+                        "n",
+                        "b",
+                        "p",
+                        "w",
+                        "w",
+                        "g"
+                    ],
+                    [
+                        "g",
+                        "g",
+                        "e",
+                        "w",
+                        "w",
+                        "w",
+                        "o",
+                        "b",
+                        "n",
+                        "s"
+                    ],
+                    [
+                        "o",
+                        "a",
+                        "y",
+                        "w",
+                        "q",
+                        "e",
+                        "x",
+                        "w",
+                        "i",
+                        "t"
+                    ]
+                ],
+                "code": "33"
+            }
+        }
         }
       }
     }

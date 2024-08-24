@@ -1,7 +1,5 @@
 import { Request, Response } from 'express';
-
+import { errorResponse, successResponse } from '../utilities/response';
 export const checkHealth = async (req: Request, res: Response) => {
-  return res.status(200).json({
-    message: 'ok',
-  });
+  return successResponse(res, 'server running', 'ok');
 };
