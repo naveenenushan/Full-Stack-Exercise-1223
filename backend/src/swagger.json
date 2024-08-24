@@ -1,0 +1,39 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Full stack exercise 1223 Backend",
+    "description": "Backend API for Full stack exercise 1223 "
+    
+  },
+  "host": "localhost:3300",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Health",
+      "description": "API"
+    }
+    
+  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/api/v1/health/": {
+      "get": {
+        "tags": ["Health"],
+        "description": "Get system health",
+        "produces": ["application/json"],
+        "summary": "health status",
+        "responses": {
+          "200": {
+            "status": "ok",
+            "schema": {}
+          }
+        }
+      }
+    }
+
+  }
+    
+}

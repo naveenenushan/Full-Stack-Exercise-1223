@@ -6,11 +6,15 @@ import cors from 'cors';
 import * as middlewares from './middlewares';
 import routes from './routes';
 import MessageResponse from './interfaces/MessageResponse';
-
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json';
+import { config } from './config';
 require('dotenv').config();
 
 const app = express();
-
+if (config.env === 'local') {
+  app.use('/api/v1/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+}
 app.use(morgan('dev'));
 app.use(helmet());
 app.use(cors());
@@ -18,9 +22,11 @@ app.use(express.json());
 
 app.get<{}, MessageResponse>('/', (req, res) => {
   res.json({
-    message: '🦄🌈✨👋🌎🌍🌏✨🌈🦄',
+    message: '🦄🌈✨👋🌎🌍🌏✨🌈🦄'
   });
 });
+
+
 
 app.use('/api/v1', routes);
 
