@@ -42,10 +42,8 @@ const generateRandomGrid = (character?: string) => {
           row.push(generateRandomLetter());
         }
       }
-
-      
     }
-    
+
     grid.push(row);
   }
 
@@ -72,7 +70,6 @@ const countOccurrences = (grid: string[][], character: string) => {
 };
 
 export function getGridData(character?: string) {
-  
   let grid = null;
   let code = null;
   try {
@@ -89,17 +86,13 @@ export function getGridData(character?: string) {
 
     const firstCharCount = countOccurrences(grid, firstCharacter);
 
-    const secondCharCount = countOccurrences(
-      grid,
-      secondCharacter,
-    );
+    const secondCharCount = countOccurrences(grid, secondCharacter);
 
     code = `${firstCharCount}${secondCharCount}`;
-
   } catch (error) {
     console.error('Error fetching grid data:', error);
     return null;
   }
 
-  return { grid: grid, code: code };
+  return { grid: grid, code: code, character: character };
 }
