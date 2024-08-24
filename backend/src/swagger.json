@@ -27,7 +27,7 @@
         "summary": "health status",
         "responses": {
           "200": {
-            "status": "ok",
+            "message": "ok",
             "schema": {}
           }
         }
