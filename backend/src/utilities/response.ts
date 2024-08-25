@@ -16,7 +16,7 @@ export const errorResponse = (
   res: Response,
   message: string,
   errorCode: string,
-  errors: string,
+  errors: any,
 ) => {
   return res.status(400).json({
     status: 'error',

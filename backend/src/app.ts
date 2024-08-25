@@ -9,6 +9,8 @@ import routes from './routes';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './swagger.json';
 import { config } from './config';
+import mongoose from 'mongoose';
+
 require('dotenv').config();
 
 const app = express();
@@ -24,5 +26,21 @@ app.use('/api/v1', routes);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
+
+const connectDatabase = async () => {
+  try {
+    await mongoose.connect(`${config.mongoURI}/FSE1223`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+};
+
+(async () => {
+  await connectDatabase();
+})();
 
 export default app;

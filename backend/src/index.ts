@@ -1,5 +1,7 @@
 import app from './app';
 import { config } from './config';
+import mongoose from 'mongoose';
+
 let shuttingDown = false;
 
 const port = config.port;
@@ -21,10 +23,16 @@ function gracefulShutdown() {
   shuttingDown = true;
   console.info('Shutting down...');
 
-  server.close(() => {
-    console.info('Server closed');
-    process.exit(0);
+  mongoose.connection.close(() => {
+    console.info('MongoDB connection closed');
+
+    server.close(() => {
+      console.info('Server closed');
+      process.exit(0);
+    });
   });
+
+
 
   // Force close connections after 10 seconds
   setTimeout(() => {
