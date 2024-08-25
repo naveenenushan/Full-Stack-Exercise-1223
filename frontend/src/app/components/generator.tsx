@@ -128,9 +128,9 @@ export default function Generator() {
             Generate 2D grid
           </button>
 
-          <button className="bg-primary hover:text-black text-white font-semibold  py-4 px-6 rounded uppercase">
+          {/* <button className="bg-primary hover:text-black text-white font-semibold  py-4 px-6 rounded uppercase">
             Payments
-          </button>
+          </button> */}
         </div>
       </div>
 
