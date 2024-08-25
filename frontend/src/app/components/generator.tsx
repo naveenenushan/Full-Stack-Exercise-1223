@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function Generator() {
   const items = Array.from({ length: 10 }, () =>
@@ -9,8 +9,11 @@ export default function Generator() {
   const [isCalling, setIsCalling] = useState(false);
   const [dataCode, setDataCode] = useState("");
   const [dataGrid, setDataGrid] = useState(items);
-  const [letter, setLetter] = useState('');
-  const [isDisabled, setIsDisabled] = useState(false); 
+  const [letter, setLetter] = useState("");
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  const letterRef = useRef(letter); // to fix subsequent state change not happening inside useEffect
+
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
@@ -30,52 +33,55 @@ export default function Generator() {
     };
   }, [isCalling]);
 
+  useEffect(() => {
+    // Update the ref value whenever 'letter' changes
+    letterRef.current = letter;
+  }, [letter]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
     // Only allow a-z (both lowercase and uppercase) and ensure only one letter is entered
     if (/^[a-z]$/.test(value)) {
       setLetter(value);
-      console.log("value: ",value)
+
       setIsDisabled(true);
       setTimeout(() => {
         setIsDisabled(false); // Re-enable input after 4 seconds
-        
       }, 4000);
-    } else if (value === '') {
+    } else if (value === "") {
       // Allow clearing the input
-      setLetter('');
+      setLetter("");
     }
   };
 
   const callApi = async () => {
     try {
-      let bodyData: string | null = JSON.stringify({character: letter})
-      if(letter === ''){
+      let bodyData: string | null = JSON.stringify({
+        character: letterRef.current,
+      });
+      if (letterRef.current === "") {
         bodyData = null;
       }
-        console.log("body",bodyData)
-      const response = await fetch("http://localhost:3300/api/v1/grid", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json', 
-        },
-        body: bodyData
-        
-      });
-      const dataArr = await response.json();
-      console.log("API response:", response.status);
 
-      console.log("API response:", dataArr.data);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_WEBSITE_URL!}/api/v1/grid`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: bodyData,
+        }
+      );
+      const dataArr = await response.json();
 
       if (response.status != 200) {
         setIsCalling(!isCalling);
         alert("Something went wrong. Try again");
       } else {
-        console.log(dataArr);
         setDataCode(dataArr.data.code || "");
         setDataGrid(dataArr.data.grid || "");
-        // items = dataArr.data.grid
       }
     } catch (error) {
       setIsCalling(!isCalling);
@@ -130,15 +136,6 @@ export default function Generator() {
 
       <div className="flex w-full pt-10">
         <div className="grid grid-cols-10   justify-evenly w-full auto-rows-[50px] border-gray-400    border-[0.5px] rounded-lg">
-          {/* {dataGrid.map((item) => (
-            <div
-              key={item}
-              className="flex justify-center items-center  border-[0.5px] border-gray-400 grid-item"
-            >
-              {item}
-            </div>
-          ))} */}
-
           {dataGrid.map((row, rowIndex) =>
             row.map((item, colIndex) => (
               <div
