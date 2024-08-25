@@ -17,11 +17,17 @@
     npm run setup
 
     ```
-5. Run the application:
+5. Build the application:
+
+    ```
+    npm run build
+
+    ```
+6. Run the application:
 
     ```
     npm start
 
     ```
 
-6. Navigate to `http://localhost:3000/`
+7. Navigate to `http://localhost:3000/`
