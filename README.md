@@ -1,13 +1,23 @@
 
   # Full-Stack Exercise #1223 📝  
-  Import your existing Readme using the import button at the bottom, 
-  or create a new Readme from scratch by typing in the editor.  
   
-  ## Get Started 🚀  
+## Running the both backend and frontend
+1. Clone the repository
+2. On your terminal, go to the cloned repository
+3. Install dependencies:
 
-### Prerequisites
+    ```
+    npm i
+    ```
 
-Make sure you have the following installed:
+4. Copy env:
 
-- [Node.js](https://nodejs.org/) `V18+ recommended`
-- [Docker](https://www.docker.com/get-started)
+    ```
+    npm run setup
+    ```
+5. Run the application:
+
+    ```
+    npm start
+    ```
+6. Navigate to `http://localhost:3000/`
