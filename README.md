@@ -8,16 +8,20 @@
 
     ```
     npm i
+    
     ```
 
 4. Copy env:
 
     ```
     npm run setup
+
     ```
 5. Run the application:
 
     ```
     npm start
+
     ```
+
 6. Navigate to `http://localhost:3000/`
