@@ -1,8 +1,24 @@
 "use client";
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense ,useContext, ReactElement, ComponentType } from "react";
+import Payment from "./payments";
+import DataContext from "./dataContext";
 
-export default function Generator() {
+interface GeneratorProps {
+  loadComponentP: () => void; 
+  activeComponent:  string; 
+}
+
+export default function Generator({ loadComponentP,activeComponent }: GeneratorProps) {
+
+  const dataContext = useContext(DataContext);
+
+  
+
+  if (!dataContext) {
+    throw new Error("Component must be used within a DataContext.Provider");
+  }
+  const { sharedValue,setSharedValue  } = dataContext;
   const items = Array.from({ length: 10 }, () =>
     Array.from({ length: 10 }, () => "")
   );
@@ -13,6 +29,7 @@ export default function Generator() {
   const [isDisabled, setIsDisabled] = useState(false);
 
   const letterRef = useRef(letter); // to fix subsequent state change not happening inside useEffect
+
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -36,6 +53,7 @@ export default function Generator() {
   useEffect(() => {
     // Update the ref value whenever 'letter' changes
     letterRef.current = letter;
+    // setSharedValue( 9 || 0);
   }, [letter]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +99,15 @@ export default function Generator() {
         alert("Something went wrong. Try again");
       } else {
         setDataCode(dataArr.data.code || "");
+
         setDataGrid(dataArr.data.grid || "");
+        
+        setSharedValue(
+          {
+          code:String(dataArr.data.code),
+          grid:dataArr.data.grid,
+          isCalling:isCalling,
+        });
       }
     } catch (error) {
       setIsCalling(!isCalling);
@@ -92,11 +118,24 @@ export default function Generator() {
   const handleGenerate = () => {
     setIsCalling(!isCalling);
   };
+
+ 
+
+
+
   const liveIconCondition = isCalling ? "bg-red-500" : "bg-gray-700";
   const inputFieldDisable = isDisabled ? "border-gray-200 text-gray-200 " : "border-gray-700 text-gray-700"
+  let activeComponentCondition = "";  
+
+  if(activeComponent == "Payment"){
+    activeComponentCondition = 'hidden'
+  }
+  
 
   return (
-    <section className="w-[800px] ">
+
+   
+    <section className={`w-[800px] ${activeComponentCondition}`} >
       <div className=" flex flex-row justify-between items-end ">
         <div className="">
           <label className="block text-gray-700 text-sm font-bold mb-2 uppercase">
@@ -129,9 +168,11 @@ export default function Generator() {
             Generate 2D grid
           </button>
 
-          {/* <button className="bg-primary hover:text-black text-white font-semibold  py-4 px-6 rounded uppercase">
+          <button
+          onClick={loadComponentP}
+          className="bg-primary hover:text-black text-white font-semibold  py-4 px-6 rounded uppercase">
             Payments
-          </button> */}
+          </button>
         </div>
       </div>
 
@@ -165,5 +206,6 @@ export default function Generator() {
         </div>
       </div>
     </section>
+
   );
 }
