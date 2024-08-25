@@ -93,6 +93,7 @@ export default function Generator() {
     setIsCalling(!isCalling);
   };
   const liveIconCondition = isCalling ? "bg-red-500" : "bg-gray-700";
+  const inputFieldDisable = isDisabled ? "border-gray-200 text-gray-200 " : "border-gray-700 text-gray-700"
 
   return (
     <section className="w-[800px] ">
@@ -107,7 +108,7 @@ export default function Generator() {
             disabled={isDisabled}
             onChange={handleInputChange}
             maxLength={1} // Restricts input length to 1 character
-            className=" appearance-none border border-gray-700 rounded w-28 py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className= {`appearance-none border  rounded w-28 py-4 px-3  leading-tight focus:outline-none focus:shadow-outline ${inputFieldDisable}`}
             id="character"
             placeholder="Character"
           />
