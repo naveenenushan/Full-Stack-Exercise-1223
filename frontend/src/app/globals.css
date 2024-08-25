@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+
+
+.grid-item:nth-child(1) {
+  border-top-left-radius: 0.5rem;
+}
+
+.grid-item:nth-child(10) {
+  border-top-right-radius: 0.5rem;
+}
+
+.grid-item:nth-child(91) {
+  border-bottom-left-radius: 0.5rem;
+}
+
+.grid-item:nth-child(100) {
+  border-bottom-right-radius: 0.5rem;
+}
