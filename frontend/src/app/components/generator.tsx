@@ -6,10 +6,12 @@ import DataContext from "./dataContext";
 
 interface GeneratorProps {
   loadComponentP: () => void; 
+  setLetter: (letter: string) => void; 
   activeComponent:  string; 
+  wsEvent:boolean;
 }
 
-export default function Generator({ loadComponentP,activeComponent }: GeneratorProps) {
+export default function Generator({ loadComponentP,activeComponent ,wsEvent,setLetter }: GeneratorProps) {
 
   const dataContext = useContext(DataContext);
 
@@ -22,34 +24,24 @@ export default function Generator({ loadComponentP,activeComponent }: GeneratorP
   const items = Array.from({ length: 10 }, () =>
     Array.from({ length: 10 }, () => "")
   );
-  const [isCalling, setIsCalling] = useState(false);
+
   const [dataCode, setDataCode] = useState("");
   const [dataGrid, setDataGrid] = useState(items);
-  const [letter, setLetter] = useState("");
+  const [letter, setLetterValue] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
 
   const letterRef = useRef(letter); // to fix subsequent state change not happening inside useEffect
-
-
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+  
+    if (wsEvent) {
+      setDataCode(sharedValue.code || "");
 
-    if (isCalling) {
-      // Call the API immediately and then set up the interval
-      callApi();
-
-      interval = setInterval(() => {
-        callApi();
-      }, 2000);
+      setDataGrid(sharedValue.grid || items);
     }
+ 
+  }, [wsEvent,sharedValue,items]); 
 
-    return () => {
-      if (interval) {
-        clearInterval(interval); // Clean up the interval on component unmount or when stopping the call
-      }
-    };
-  }, [isCalling]);
-
+ 
   useEffect(() => {
     // Update the ref value whenever 'letter' changes
     letterRef.current = letter;
@@ -62,6 +54,7 @@ export default function Generator({ loadComponentP,activeComponent }: GeneratorP
     // Only allow a-z (both lowercase and uppercase) and ensure only one letter is entered
     if (/^[a-z]$/.test(value)) {
       setLetter(value);
+      setLetterValue(value)
 
       setIsDisabled(true);
       setTimeout(() => {
@@ -70,60 +63,17 @@ export default function Generator({ loadComponentP,activeComponent }: GeneratorP
     } else if (value === "") {
       // Allow clearing the input
       setLetter("");
+      setLetterValue("")
     }
   };
 
-  const callApi = async () => {
-    try {
-      let bodyData: string | null = JSON.stringify({
-        character: letterRef.current,
-      });
-      if (letterRef.current === "") {
-        bodyData = null;
-      }
-
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_WEBSITE_URL!}/api/v1/grid`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: bodyData,
-        }
-      );
-      const dataArr = await response.json();
-
-      if (response.status != 200) {
-        setIsCalling(!isCalling);
-        alert("Something went wrong. Try again");
-      } else {
-        setDataCode(dataArr.data.code || "");
-
-        setDataGrid(dataArr.data.grid || "");
-        
-        setSharedValue(
-          {
-          code:String(dataArr.data.code),
-          grid:dataArr.data.grid,
-          isCalling:isCalling,
-        });
-      }
-    } catch (error) {
-      setIsCalling(!isCalling);
-      console.error("Error calling the API:", error);
-    }
-  };
-
-  const handleGenerate = () => {
-    setIsCalling(!isCalling);
-  };
+  
 
  
 
 
 
-  const liveIconCondition = isCalling ? "bg-red-500" : "bg-gray-700";
+  const liveIconCondition = wsEvent ? "bg-red-500" : "bg-gray-700";
   const inputFieldDisable = isDisabled ? "border-gray-200 text-gray-200 " : "border-gray-700 text-gray-700"
   let activeComponentCondition = "";  
 
@@ -161,12 +111,7 @@ export default function Generator({ loadComponentP,activeComponent }: GeneratorP
           ></Image>
         </div>
         <div className=" flex gap-4">
-          <button
-            onClick={handleGenerate}
-            className="bg-primary hover:text-black text-white font-semibold  py-4 px-6 rounded uppercase"
-          >
-            Generate 2D grid
-          </button>
+          
 
           <button
           onClick={loadComponentP}
