@@ -17,17 +17,19 @@
     npm run setup
 
     ```
-5. Build the application:
+5.  Update backend > .env > MONGO_URI according to ur mongodb server uri
+
+6. Build the application:
 
     ```
     npm run build
 
     ```
-6. Run the application:
+7. Run the application:
 
     ```
     npm start
 
     ```
 
-7. Navigate to `http://localhost:3000/`
+8. Navigate to `http://localhost:3000/`

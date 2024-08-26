@@ -21,8 +21,9 @@ This is a [Node.js](https://nodejs.org/) project bootstrapped with
 4. Copy env:
 
     ```
-    cp .env.local.template .env.local  
+    cp .env.sample .env  
     ```
+    Update MONGO_URI according to ur mongodb server uri
 5. Run the application:
 
     ```
