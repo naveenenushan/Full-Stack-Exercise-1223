@@ -1,18 +1,30 @@
 import app from './app';
 import { config } from './config';
 import mongoose from 'mongoose';
+import http from 'http';
+import { Server, Socket } from 'socket.io';
+import { initializeWebSocket } from './controllers/webSocketController';
 
 let shuttingDown = false;
 
 const port = config.port;
 const env = config.env;
-
-const server = app.listen(port, () => {
+const httpServer = http.createServer(app);
+httpServer.listen(port, () => {
   /* eslint-disable no-console */
   console.log(`Env: ${env}`);
   console.log(`Listening: http://localhost:${port}`);
   /* eslint-enable no-console */
 });
+
+const io = new Server(httpServer, {
+  transports: ['websocket', 'polling'],
+});
+initializeWebSocket(io);
+
+
+
+
 
 async function gracefulShutdown() {
   if (shuttingDown) {
@@ -25,7 +37,7 @@ async function gracefulShutdown() {
 
   await mongoose.connection.close();
 
-  server.close(() => {
+  httpServer.close(() => {
     console.info('Server closed');
     process.exit(0);
   });
