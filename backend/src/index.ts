@@ -14,7 +14,7 @@ const server = app.listen(port, () => {
   /* eslint-enable no-console */
 });
 
-function gracefulShutdown() {
+async function gracefulShutdown() {
   if (shuttingDown) {
     console.info('Already shutting down');
     return;
@@ -23,16 +23,12 @@ function gracefulShutdown() {
   shuttingDown = true;
   console.info('Shutting down...');
 
-  mongoose.connection.close(() => {
-    console.info('MongoDB connection closed');
+  await mongoose.connection.close();
 
-    server.close(() => {
-      console.info('Server closed');
-      process.exit(0);
-    });
+  server.close(() => {
+    console.info('Server closed');
+    process.exit(0);
   });
-
-
 
   // Force close connections after 10 seconds
   setTimeout(() => {

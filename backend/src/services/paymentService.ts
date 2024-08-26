@@ -11,3 +11,14 @@ export async function savePaymentData(paymentData: TPayment) {
     return null;
   }
 }
+
+export async function getPaymentsData() {
+  try {
+    const payments : TPayment[] = await payment.find();
+
+    return payments;
+  } catch (error) {
+    console.error('error: ', error);
+    return null;
+  }
+}

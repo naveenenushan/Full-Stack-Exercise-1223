@@ -1,12 +1,9 @@
 import express from 'express';
-import { addPayment } from '../controllers/paymentController';
+import { addPayment, getPayments } from '../controllers/paymentController';
 
-const grid = express.Router();
+const payments = express.Router();
 
+payments.post('/create', addPayment);
+payments.get('/', getPayments);
 
-
-grid.post('/payment', addPayment);
-// grid.get('/payment', getGrid);
-export default grid;
-
-
+export default payments;

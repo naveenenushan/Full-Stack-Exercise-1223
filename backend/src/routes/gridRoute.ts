@@ -5,7 +5,7 @@ const grid = express.Router();
 
 
 
-grid.post('/grid', getGrid);
+grid.post('/', getGrid);
 
 export default grid;
 

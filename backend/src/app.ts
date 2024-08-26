@@ -9,7 +9,7 @@ import routes from './routes';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './swagger.json';
 import { config } from './config';
-import mongoose from 'mongoose';
+import mongoose, { ConnectOptions } from 'mongoose';
 
 require('dotenv').config();
 
@@ -27,12 +27,12 @@ app.use('/api/v1', routes);
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
 
+
 const connectDatabase = async () => {
   try {
-    await mongoose.connect(`${config.mongoURI}/FSE1223`, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+
+    await mongoose.connect(`${config.mongoURI}/FSE1223`);
+   
   } catch (error) {
     console.error(error);
     process.exit(1);

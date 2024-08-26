@@ -5,7 +5,7 @@ const health = express.Router();
 
 
 
-health.get<{}, HealthResponse>('/health', checkHealth);
+health.get<{}, HealthResponse>('/', checkHealth);
 
 export default health;
 
