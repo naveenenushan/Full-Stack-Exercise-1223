@@ -18,13 +18,12 @@ httpServer.listen(port, () => {
 });
 
 const io = new Server(httpServer, {
+  cors: {
+    origin: '*', //need to change in prod 
+  },
   transports: ['websocket', 'polling'],
 });
 initializeWebSocket(io);
-
-
-
-
 
 async function gracefulShutdown() {
   if (shuttingDown) {

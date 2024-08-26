@@ -1,32 +1,23 @@
 import { Server, Socket } from 'socket.io';
 import { getGridData } from '../services/gridService';
 import { config } from '../config';
-// Function to handle WebSocket events
-function handleEvents(socket: Socket): void {
-  // Example custom event listener
-  socket.on('message', (data: any) => {
-    console.log('Message received:', data);
+let letterValue: string;
 
-    // Send response back to the client
-    socket.emit('message', 'Hello from server');
+function handleEvents(socket: Socket): void {
+
+
+  socket.on('letter', (letter: string) => {
+    console.log('Message received:', letter);
+    letterValue = letter;
+    
   });
 
-  // Add more event listeners as needed
+
 }
 
-// Function to initialize WebSocket server
+
 export function initializeWebSocket(io: Server): void {
-  //   io.use((socket, next) => {
-  //     const onevent = socket.onevent;
-  //     //@ts-ignore
-  //     socket.onevent = function (packet) {
-  //       const [eventName, ...args] = packet.data || [];
-  //       console.log('tokrn : ', socket.handshake.auth.token);
-  //       console.log(`Event: ${eventName}`, args);
-  //       onevent.call(socket, packet); // Call the original onevent handler
-  //     };
-  //     next();
-  //   });
+
 
   io.use(async (socket, next) => {
     try {
@@ -57,8 +48,9 @@ export function initializeWebSocket(io: Server): void {
     console.log('A new client connected:', socket.id);
 
     const intervalId = setInterval(() => {
-      //
-      const gridData = getGridData();
+      
+      
+      const gridData = getGridData(letterValue);
       socket.emit('grid', gridData);
     }, 2000); // Every 2 seconds
 
