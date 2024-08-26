@@ -8,7 +8,7 @@ import DataContext from "./components/dataContext";
 
 export default function Home() {
   const [activeComponent, setActiveComponent] = useState("Generator");
-  const [sharedValue, setSharedValue] = useState({code:'0',grid:[],isCalling:false});
+  const [sharedValue, setSharedValue] = useState<SharedValue>({code:'0',grid:[],isCalling:false});
 
   const loadComponentG = () => {
     setActiveComponent("Generator");
@@ -16,6 +16,11 @@ export default function Home() {
   const loadComponentP = () => {
     setActiveComponent("Payment");
     
+  }
+  interface SharedValue {
+    isCalling: boolean;
+    code: string;
+    grid: [];
   }
 
   return (
